@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  mongo:
+    image: mongo
+    networks:
+      - cljblog-nw
+    volumes:
+      - db-data:/data/db
+
+  cljblog:
+    image: cljblog
+    ports:
+      - 80:8888
+    networks:
+      - cljblog-nw
+    environment:
+      CLJBLOG_PORT: 8888
+      CLJBLOG_MONGO_URI: mongodb://mongo/cljblog
+      CLJBLOG_ADMIN_LOGIN: admin
+      CLJBLOG_ADMIN_PASSW: admin
+
+networks:
+  cljblog-nw:
+    driver: bridge
+
+volumes:
+  db-data:
